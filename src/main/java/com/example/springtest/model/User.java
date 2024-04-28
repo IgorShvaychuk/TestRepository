@@ -4,25 +4,24 @@ import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 public class User {
-    private Long id;
 
-    @NotBlank(message = "Email is required")
+    @NotBlank(groups = NotEmptyCheck.class, message = "Email is required")
     @Email(message = "Invalid email format")
     private String email;
 
-    @NotBlank(message = "First name is required")
+    @NotBlank(groups = NotEmptyCheck.class, message = "First name is required")
     private String firstName;
 
-    @NotBlank(message = "Last name is required")
+    @NotBlank(groups = NotEmptyCheck.class, message = "Last name is required")
     private String lastName;
 
-    @NotNull(message = "Birth date is required")
-    @Past(message = "Birth date must be in the past")
+    @NotNull(groups = NotNullCheck.class, message = "Birth date is required")
+    @Past(groups = PastCheck.class, message = "Birth date must be in the past")
     private LocalDate birthDate;
 
     private String address;
 
-    @Pattern(regexp="\\d{10}", message = "Phone number must be 10 digits")
+    @Pattern(groups = DigitsNumberCheck.class, regexp="\\d{10}", message = "Phone number must be 10 digits")
     private String phoneNumber;
 
     public User(String email, String firstName, String lastName, LocalDate birthDate) {
@@ -80,17 +79,13 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-//    public Long getId() {
-//        // Генерация уникального идентификатора на основе хэша свойств пользователя
-//        return (long) Objects.hash(email, firstName, lastName, birthDate);
-//    }
+    public interface NotEmptyCheck{}
 
+    public interface NotNullCheck{}
 
-    public Long getId() {
-        return id;
-    }
+    public interface DigitsNumberCheck{}
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    public interface PastCheck{}
 }
+
+
